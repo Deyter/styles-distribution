@@ -5,7 +5,7 @@
     <title-short>EJIS</title-short>
     <id>http://www.zotero.org/styles/european-journal-of-information-systems</id>
     <link href="http://www.zotero.org/styles/european-journal-of-information-systems" rel="self"/>
-    <link href="http://www.palgrave.com/gp/journal/41303/authors/presentation-formatting" rel="documentation"/>
+    <link href="http://www.palgrave-journals.com/ejis/author_instructions.html#References" rel="documentation"/>
     <author>
       <name>Xunhua Guo</name>
       <email>xunhua.guo@gmail.com</email>
@@ -18,30 +18,34 @@
     <category field="science"/>
     <issn>0960-085X</issn>
     <eissn>1476-9344</eissn>
-    <updated>2017-10-21T17:31:14+00:00</updated>
+    <updated>2014-09-10T05:25:38+00:00</updated>
     <rights license="http://creativecommons.org/licenses/by-sa/3.0/">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>
   </info>
+  <!-- editors  -->
   <macro name="editor">
-    <names variable="editor" delimiter=", " prefix="(" suffix=")">
-      <name font-variant="small-caps" and="symbol" initialize-with="" name-as-sort-order="all" sort-separator=" "/>
-      <label form="short" text-case="capitalize-first" strip-periods="true" prefix=", "/>
+    <names variable="editor" delimiter=", ">
+      <name and="symbol" initialize-with=". " delimiter=", "/>
+      <label form="short" prefix=" "/>
     </names>
   </macro>
+  <!-- unknown author -->
   <macro name="anon">
     <text term="anonymous" form="short" text-case="capitalize-first" strip-periods="true"/>
   </macro>
+  <!-- author  in references -->
   <macro name="author">
     <names variable="author">
       <name name-as-sort-order="all" and="text" sort-separator=" " initialize-with="" delimiter-precedes-last="never" delimiter=", ">
         <name-part name="family" text-case="uppercase"/>
       </name>
-      <label form="short" strip-periods="true" prefix=" (" suffix=")"/>
+      <label form="short" prefix=" "/>
       <substitute>
         <names variable="editor"/>
         <text macro="anon"/>
       </substitute>
     </names>
   </macro>
+  <!-- author in citation -->
   <macro name="author-short">
     <names variable="author">
       <name form="short" and="symbol" delimiter=", " delimiter-precedes-last="never" initialize-with=". "/>
@@ -53,13 +57,12 @@
       </substitute>
     </names>
   </macro>
+  <!-- Specifies the references for webpages -->
   <macro name="access">
     <choose>
       <if variable="URL">
-        <group delimiter=": ">
-          <text term="available at" text-case="capitalize-first"/>
-          <text variable="URL"/>
-        </group>
+        <text value="Available at: "/>
+        <text variable="URL"/>
         <group prefix=" (" suffix=")">
           <text value="accessed "/>
           <date variable="accessed">
@@ -71,6 +74,7 @@
       </if>
     </choose>
   </macro>
+  <!-- title  -->
   <macro name="title">
     <choose>
       <if type="bill book graphic legal_case motion_picture report song thesis webpage" match="any">
@@ -81,12 +85,14 @@
       </else>
     </choose>
   </macro>
+  <!-- publisher -->
   <macro name="publisher">
-    <group delimiter=", ">
-      <text variable="publisher"/>
+    <group delimiter=": ">
       <text variable="publisher-place"/>
+      <text variable="publisher"/>
     </group>
   </macro>
+  <!-- issue  -->
   <macro name="year-date">
     <choose>
       <if variable="issued">
@@ -99,6 +105,7 @@
       </else>
     </choose>
   </macro>
+  <!-- edition -->
   <macro name="edition">
     <choose>
       <if is-numeric="edition">
@@ -112,15 +119,14 @@
       </else>
     </choose>
   </macro>
+  <!-- pages -->
   <macro name="pages">
     <group prefix=" ">
       <text variable="page"/>
     </group>
   </macro>
+  <!-- citationn -->
   <citation et-al-min="3" et-al-use-first="1" disambiguate-add-year-suffix="true" disambiguate-add-names="true" disambiguate-add-givenname="true">
-    <sort>
-      <key macro="year-date"/>
-    </sort>
     <layout prefix="(" suffix=")" delimiter="; ">
       <group delimiter=", ">
         <text macro="author-short"/>
@@ -132,6 +138,7 @@
       </group>
     </layout>
   </citation>
+  <!-- bibliography -->
   <bibliography hanging-indent="true">
     <sort>
       <key macro="author"/>
@@ -143,8 +150,9 @@
         <date-part name="year"/>
       </date>
       <choose>
+        <!-- book -->
         <if type="bill book graphic legal_case motion_picture report song" match="any">
-          <group prefix=" " delimiter=". " suffix=".">
+          <group prefix=" " delimiter=". ">
             <group>
               <text macro="title"/>
               <text macro="edition"/>
@@ -153,22 +161,24 @@
             <text macro="publisher"/>
           </group>
         </if>
+        <!-- conference paper -->
         <else-if type="chapter paper-conference" match="any">
           <text macro="title" prefix=" " suffix="."/>
           <group prefix=" " delimiter=" ">
-            <text term="in" text-case="capitalize-first"/>
-            <text variable="container-title" font-style="italic"/>
-            <text macro="editor" suffix=","/>
+            <text term="in" text-case="capitalize-first" suffix=":"/>
+            <text macro="editor"/>
+            <text variable="container-title" font-style="italic" suffix="."/>
             <text variable="collection-title" suffix="."/>
             <group suffix="." delimiter=", ">
               <group>
-                <label strip-periods="true" suffix=" " variable="page" form="short"/>
+                <label variable="page" form="short" suffix=" "/>
                 <text macro="pages"/>
               </group>
               <text macro="publisher"/>
             </group>
           </group>
         </else-if>
+        <!-- thesis -->
         <else-if type="thesis">
           <group prefix=" " delimiter=". " suffix=".">
             <text macro="title"/>
@@ -177,6 +187,7 @@
             <text macro="publisher"/>
           </group>
         </else-if>
+        <!-- webpage -->
         <else-if type="webpage">
           <group prefix=" " delimiter=", " suffix=".">
             <text macro="title"/>
@@ -184,6 +195,7 @@
           </group>
           <text value=" [Online]"/>
         </else-if>
+        <!-- for rest of the types -->
         <else>
           <group suffix=".">
             <text macro="title" prefix=" "/>
@@ -191,7 +203,7 @@
           </group>
           <group prefix=" " suffix=".">
             <text variable="container-title" font-style="italic"/>
-            <group font-weight="bold" prefix=" ">
+            <group prefix=" ">
               <text variable="volume"/>
               <text variable="issue" prefix="(" suffix=")"/>
             </group>

@@ -12,7 +12,7 @@
     <category citation-format="note"/>
     <category field="history"/>
     <summary>Le style bibliographique pour citation et références du Département des sciences historiques de l'Université Laval</summary>
-    <updated>2018-05-17T11:21:13+00:00</updated>
+    <updated>2016-05-01T18:00:47+00:00</updated>
     <rights license="http://creativecommons.org/licenses/by-sa/3.0/">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>
   </info>
   <macro name="author-bibliography">
@@ -58,20 +58,25 @@
     <choose>
       <if variable="URL">
         <choose>
-          <if type="article-journal article-newspaper broadcast entry-encyclopedia figure graphic motion_picture patent post post-weblog song webpage" match="any">
-            <group delimiter=", ">
-              <text variable="URL"/>
-              <group delimiter=" ">
-                <text value="consulté le"/>
-                <date variable="accessed">
-                  <date-part name="day" suffix=" "/>
-                  <date-part name="month" suffix=" "/>
-                  <date-part name="year"/>
-                </date>
-              </group>
-            </group>
+          <if type="webpage article-newspaper broadcast figure graphic post post-weblog song" match="any">
+            <text variable="URL"/>
+            <text macro="accessed-date"/>
           </if>
         </choose>
+      </if>
+    </choose>
+  </macro>
+  <macro name="accessed-date">
+    <choose>
+      <if variable="URL">
+        <group delimiter=" ">
+          <text value="consulté le"/>
+          <date variable="accessed">
+            <date-part name="day" suffix=" "/>
+            <date-part name="month" suffix=" "/>
+            <date-part name="year"/>
+          </date>
+        </group>
       </if>
     </choose>
   </macro>
@@ -185,7 +190,7 @@
     </choose>
   </macro>
   <citation et-al-min="4" et-al-use-first="1" disambiguate-add-year-suffix="true" disambiguate-add-names="true" disambiguate-add-givenname="true">
-    <layout delimiter=" ; " suffix=".">
+    <layout delimiter=" ; ">
       <choose>
         <if match="all" position="first">
           <group delimiter=", ">
@@ -203,57 +208,30 @@
               </else-if>
             </choose>
             <choose>
-              <if match="all" locator="page">
-                <choose>
-                  <if type="article article-journal article-magazine article-newspaper review" match="any">
-                    <group delimiter=", ">
-                      <text macro="journal-title"/>
-                      <text macro="locators"/>
-                      <text macro="pages-citation"/>
-                    </group>
-                  </if>
-                  <else>
-                    <group delimiter=", ">
-                      <text macro="thesis"/>
-                      <text macro="publisher"/>
-                      <text macro="year-date"/>
-                      <text macro="pages-citation"/>
-                    </group>
-                  </else>
-                </choose>
+              <if type="article article-journal article-magazine article-newspaper review" match="any">
+                <group delimiter=", ">
+                  <text macro="journal-title"/>
+                  <text macro="locators"/>
+                  <text macro="pages-citation"/>
+                </group>
               </if>
               <else>
-                <choose>
-                  <if type="article article-journal article-magazine article-newspaper review" match="any">
-                    <group delimiter=", ">
-                      <text macro="journal-title"/>
-                      <text macro="locators"/>
-                      <text macro="pages-bibliography"/>
-                    </group>
-                  </if>
-                  <else>
-                    <group delimiter=", ">
-                      <text macro="thesis"/>
-                      <text macro="publisher"/>
-                      <text macro="year-date"/>
-                      <text macro="pages-bibliography"/>
-                    </group>
-                  </else>
-                </choose>
+                <group delimiter=", ">
+                  <text macro="thesis"/>
+                  <text macro="publisher"/>
+                  <text macro="year-date"/>
+                  <text macro="pages-citation"/>
+                </group>
               </else>
             </choose>
             <text macro="access"/>
           </group>
         </if>
-        <else-if match="all" position="ibid-with-locator">
+        <else-if match="any" position="ibid ibid-with-locator">
           <group delimiter=", ">
             <text term="ibid" text-case="capitalize-first" font-style="italic" suffix="."/>
             <text macro="pages-citation"/>
           </group>
-        </else-if>
-        <else-if match="all" position="ibid" locator="page">
-          <text term="ibid" text-case="capitalize-first" font-style="italic" suffix="."/>
-          <text macro="pages-citation"/>
         </else-if>
         <else>
           <group delimiter=", ">

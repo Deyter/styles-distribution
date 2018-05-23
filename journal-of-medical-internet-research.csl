@@ -17,19 +17,16 @@
     <contributor>
       <name>Matt Tracy</name>
     </contributor>
-    <contributor>
-      <name>Patrick O'Brien</name>
-    </contributor>
     <category citation-format="numeric"/>
     <category field="medicine"/>
     <issn>1439-4456</issn>
     <eissn>1438-8871</eissn>
-    <updated>2017-06-04T15:37:59+00:00</updated>
+    <updated>2014-09-21T00:39:49+00:00</updated>
     <rights license="http://creativecommons.org/licenses/by-sa/3.0/">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>
   </info>
   <locale xml:lang="en">
     <terms>
-      <term name="available at">available from</term>
+      <term name="retrieved">available</term>
       <term name="section" form="short">sect.</term>
     </terms>
   </locale>
@@ -70,28 +67,14 @@
   </macro>
   <macro name="access">
     <choose>
-      <if variable="PMID" match="any">
-        <text variable="PMID" prefix=" PMID:"/>
-      </if>
-      <else-if variable="DOI" match="any">
-        <text variable="DOI" prefix="[doi: " suffix="]"/>
-      </else-if>
-      <else>
-        <choose>
-          <if variable="URL">
-            <group delimiter=": ">
-              <group delimiter=" ">
-                <text term="available at" text-case="capitalize-first"/>
-              </group>
-              <text variable="URL"/>
-            </group>
-          </if>
-        </choose>
-      </else>
-    </choose>
-    <choose>
-      <if type="book" match="any">
-        <text variable="ISBN" prefix="ISBN:"/>
+      <if variable="URL">
+        <group delimiter=": ">
+          <group delimiter=" ">
+            <text term="retrieved" text-case="capitalize-first"/>
+            <text term="from"/>
+          </group>
+          <text variable="URL"/>
+        </group>
       </if>
     </choose>
   </macro>
@@ -122,6 +105,7 @@
         </group>
         <text macro="edition" prefix=" "/>
       </if>
+      <!--add event-name and event-place once they become available-->
       <else-if type="bill legislation" match="any">
         <group delimiter=", ">
           <group delimiter=". ">
@@ -215,10 +199,7 @@
         <text variable="page" prefix=":"/>
       </if>
       <else>
-        <group delimiter=" " prefix=" ">
-          <label plural="never" variable="page" form="short"/>
-          <text variable="page"/>
-        </group>
+        <text variable="page" prefix=" p. "/>
       </else>
     </choose>
   </macro>
@@ -245,7 +226,7 @@
       <text variable="citation-number"/>
     </layout>
   </citation>
-  <bibliography second-field-align="flush">
+  <bibliography et-al-min="7" et-al-use-first="6" second-field-align="flush">
     <layout>
       <text variable="citation-number" suffix=". "/>
       <group delimiter=". " suffix=". ">
@@ -264,6 +245,7 @@
       </group>
       <text macro="report-details" suffix=". "/>
       <text macro="access"/>
+      <text prefix=" PMID: " variable="PMID"/>
     </layout>
   </bibliography>
 </style>
